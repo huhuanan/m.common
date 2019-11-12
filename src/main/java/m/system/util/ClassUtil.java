@@ -1,13 +1,17 @@
 package m.system.util;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.jar.JarEntry;
+import java.util.jar.JarInputStream;
 
 import m.system.exception.MException;
 
@@ -122,16 +126,44 @@ public class ClassUtil {
 	 * @param packeageName
 	 * @return
 	 */
-	public static String[] getAllQualifiedName4Class(String packeageName){
-		File file=new File(Thread.currentThread().getContextClassLoader().getResource(packeageName.replaceAll("\\.", "/")).getPath());
-		if(file.isDirectory()){
-			String[] names=file.list();
-			for(int i=0;i<names.length;i++){
-				names[i]=packeageName+"."+names[i].substring(0, names[i].lastIndexOf("."));
+	public static String[] getAllQualifiedName4Class(String packageName){
+		String packagePath=packageName.replaceAll("\\.", "/");
+		List<String> names=new ArrayList<String>();
+		try {
+			URL url=Thread.currentThread().getContextClassLoader().getResource(packagePath);
+			String path=url.getPath();
+			System.out.println(packageName+" - "+path);
+			int pos = path.indexOf('!');
+			path=-1==pos?path:path.substring(5, pos);
+			if(path.endsWith(".jar")) {
+				JarInputStream jarIn = new JarInputStream(new FileInputStream(path));
+				JarEntry entry = jarIn.getNextJarEntry();
+				while (null != entry) {
+					String name = entry.getName();
+					if (name.startsWith(packagePath) && name.endsWith(".class")) {
+						names.add(packageName+"."+name.substring(name.lastIndexOf("/")+1, name.lastIndexOf(".")));
+					}
+					entry = jarIn.getNextJarEntry();
+				}
+			}else {
+				File file=new File(path);
+				if(file.isDirectory()){
+					for(String name : file.list()){
+						names.add(packageName+"."+name.substring(0, name.lastIndexOf(".")));
+					}
+				}
 			}
-			return names;
-		}
-		return new String[]{};
+		}catch(Exception e) {}
+		return names.toArray(new String[] {});
+//		File file=new File(Thread.currentThread().getContextClassLoader().getResource(packeageName.replaceAll("\\.", "/")).getPath());
+//		if(file.isDirectory()){
+//			String[] names=file.list();
+//			for(int i=0;i<names.length;i++){
+//				names[i]=packeageName+"."+names[i].substring(0, names[i].lastIndexOf("."));
+//			}
+//			return names;
+//		}
+//		return new String[]{};
 	}
 	/**
 	 * 获取对象的get方法返回值
