@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<sql tableName="os_admin_group"><![CDATA[
+	INSERT INTO os_admin_group (oid, name, description, status) VALUES ('1', '管理员', '', '0');
+	]]></sql>
+	<sql tableName="os_admin_login"><![CDATA[
+	INSERT INTO os_admin_login (oid, realname, username, password,status,admin_group_oid) VALUES ('1', '管理员', 'admin', 'e10adc3949ba59abbe56e057f20f883e','0','1');
+	]]></sql>
+	<sql tableName="os_image_info"><![CDATA[
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('1', 'defaultHead', 'resources/ico/head1.jpg', 'resources/ico/head1.jpg', '');
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('2', 'defaultHead', 'resources/ico/head2.jpg', 'resources/ico/head2.jpg', '');
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('3', 'defaultHead', 'resources/ico/head3.jpg', 'resources/ico/head3.jpg', '');
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('4', 'defaultHead', 'resources/ico/head4.jpg', 'resources/ico/head4.jpg', '');
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('5', 'defaultHead', 'resources/ico/head5.jpg', 'resources/ico/head5.jpg', '');
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('6', 'defaultHead', 'resources/ico/head6.jpg', 'resources/ico/head6.jpg', '');
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('7', 'defaultHead', 'resources/ico/head7.jpg', 'resources/ico/head7.jpg', '');
+	INSERT INTO os_image_info (oid, image_type, img_path, thum_path, image_admin_oid) VALUES ('8', 'defaultHead', 'resources/ico/head8.jpg', 'resources/ico/head8.jpg', '');
+	]]></sql>
+	<sql tableName="os_image_link"><![CDATA[
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('1', '', '', '', '1');
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('2', '', '', '', '2');
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('3', '', '', '', '3');
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('4', '', '', '', '4');
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('5', '', '', '', '5');
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('6', '', '', '', '6');
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('7', '', '', '', '7');
+	INSERT INTO os_image_link (oid, business_oid, business, image_admin_oid, image_info_oid) VALUES ('8', '', '', '', '8');
+	]]></sql>
+	<sql tableName="os_group_menu_link"><![CDATA[
+	INSERT INTO os_group_menu_link (oid, admin_group_oid, module_oid, menu_oid) VALUES ('1', '1', 'A', 'A11');
+	INSERT INTO os_group_menu_link (oid, admin_group_oid, module_oid, menu_oid) VALUES ('2', '1', 'A', 'A1101');
+	]]></sql>
+	<sql tableName="os_admin_group_power"><![CDATA[
+	INSERT INTO os_admin_group_power (oid, name, admin_group_oid) VALUES ('1', 'manage_system_power', '1');
+	]]></sql>
+	<sql tableName="os_dictionary_type"><![CDATA[
+	INSERT INTO os_dictionary_type (oid, name, type) VALUES ('0', '基础状态', 'status');
+	INSERT INTO os_dictionary_type (oid, name, type) VALUES ('1', '成本类型', 'costType');
+	INSERT INTO os_dictionary_type (oid, name, type) VALUES ('2', '付款类型', 'payType');
+	INSERT INTO os_dictionary_type (oid, name, type) VALUES ('3', '商品属性', 'goodsProperty');
+	INSERT INTO os_dictionary_type (oid, name, type) VALUES ('4', '是否属性', 'judgment');
+	]]></sql>
+	<sql tableName="os_dictionary_data"><![CDATA[
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('0', '0', '正常', '0', '0', '0');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('9', '0', '停用', '9', '9', '0');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('101', '0', '充值', 'userRecharge', '0', '1');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('102', '0', '手续费', 'serviceCharge', '0', '1');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('103', '0', '美团', 'meituan', '0', '1');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('104', '0', '付款', 'payment', '0', '1');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('105', '0', '扣除', 'extract', '0', '1');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('199', '0', '其他', 'other', '0', '1');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('210', '0', '后台充值', 'back', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('211', '0', '服务退款', 'refund', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('212', '0', '订单充值', 'orderPay', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('213', '0', '订单提成', 'orderDeal', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('214', '0', '美团提成', 'meituanDeal', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('215', '0', '会员充值', 'doMember', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('216', '0', '团单充值', 'meituanCode', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('217', '0', '底薪', 'payWage', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('218', '0', '月度分红', 'monthBonus', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('249', '0', '后台扣除', 'extract', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('250', '0', '余额消费', 'member', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('251', '0', '会员充值', 'toMember', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('252', '0', '积分兑换', 'point', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('281', '0', '支付宝付款', 'payAlipay', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('282', '0', '微信付款', 'payWechat', '0', '2');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('32', '0', '服务商品', 'serve', '0', '3');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('41', '0', '是', 'Y', '0', '4');
+	INSERT INTO os_dictionary_data (oid, status, name, value, sort, dictionary_type_oid) VALUES ('42', '0', '否', 'N', '0', '4');
+	]]></sql>
+
+</root>
