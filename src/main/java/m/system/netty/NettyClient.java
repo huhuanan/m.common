@@ -63,11 +63,6 @@ public class NettyClient<T extends Object> extends NettyObject<NettyClient<T>> {
 					    String ipport=ctx.channel().localAddress().toString();
 						event.exceptionCallback(ipport, cause);
 					}
-					@Override
-					protected void messageReceived(ChannelHandlerContext ctx, T msg) throws Exception {
-						// TODO Auto-generated method stub
-						
-					}
 				});
 			}
         });
