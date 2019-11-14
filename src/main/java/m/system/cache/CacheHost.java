@@ -54,7 +54,7 @@ public class CacheHost implements Serializable,IFluchCache,IJsonOuter {
 	private String key;
 	private Object obj;
 	private Date time;
-	private boolean ready=true;
+	private boolean ready=true;//读取是否成功
 	private int readyNum=0;
 	
 	private CacheHost(String key) {
@@ -69,6 +69,7 @@ public class CacheHost implements Serializable,IFluchCache,IJsonOuter {
 	protected Object get() {
 		if(this.ready) {
 			this.time=new Date();
+			this.readyNum=0;
 			return this.obj;
 		}else {
 			if(this.readyNum>60) {

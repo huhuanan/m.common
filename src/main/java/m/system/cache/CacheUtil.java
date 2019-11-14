@@ -6,6 +6,7 @@ import m.common.model.util.ModelUpdateUtil;
 import m.common.model.util.QueryCondition;
 import m.common.netty.HostNettyUtil;
 import m.system.cache.model.CacheSynch;
+import m.system.cache.redis.RedisCacheUtil;
 import m.system.db.SqlBuffer;
 import m.system.exception.MException;
 import m.system.netty.NettyClient;
@@ -13,24 +14,37 @@ import m.system.netty.NettyMessage;
 import m.system.util.StringUtil;
 
 public class CacheUtil {
+	/** 获取缓存 本地没有则从服务端获取 */
 	public static Object get(String key) {
 		Object obj=CacheHost.instance(key).get();
-		if(null==obj) {
-			sendNettyGetCache(key);
-			return CacheHost.instance(key).get();
+		if(null==obj) {//缓存不存在
+			obj=RedisCacheUtil.get(key);//从redis里获取
+			if(null!=obj) {//取到则存入缓存
+				CacheHost.instance(key).push(obj);
+			}else {//取不到则使用主机服务
+				sendNettyGetCache(key);
+				return CacheHost.instance(key).get();
+			}
 		}
 		return obj;
 	}
+	/** 添加缓存 */
 	public static void push(String key,Object obj) {
 		CacheHost.instance(key).push(obj);
+		RedisCacheUtil.set(key, obj);
 		sendNettyPushCache(key,obj);
 	}
+	/** 清除缓存 */
 	public static void clear(String key) {
 		clear(key,true);
 	}
+	/** 清除缓存 并通知其他主机清除 */
 	public static void clear(String key,boolean synch) {
 		CacheHost.instance(key).clear();
-		if(synch) sendNettyClearCache(CacheHost.class,key,null);
+		if(synch) {
+			RedisCacheUtil.del(key);
+			sendNettyClearCache(CacheHost.class,key,null);
+		}
 	}
 	
 	public static <T extends FlushCache> T get(Class<T> clazz,String key){

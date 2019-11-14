@@ -9,6 +9,7 @@ import javax.servlet.ServletContextListener;
 import m.common.netty.HostNettyUtil;
 import m.system.RuntimeData;
 import m.system.SystemInit;
+import m.system.cache.redis.RedisConfig;
 import m.system.db.DBConfig;
 import m.system.db.TransactionManager;
 import m.system.task.TaskUtil;
@@ -45,6 +46,7 @@ public class InitListener implements ServletContextListener {
 			DBConfig.setInitConnect(dbp.getProperty("db_init_connect"));
 			DBConfig.setMaxConnect(Integer.parseInt(dbp.getProperty("db_max_connect","20")));
 			DBConfig.setQueryTimeout(Integer.parseInt(dbp.getProperty("db_query_timeout", "600")));
+			RedisConfig.initConfig(dbp.getProperty("redis_ip"), Integer.parseInt(dbp.getProperty("redis_port","6379")), dbp.getProperty("redis_auth"));
 			TransactionManager.initConnection();
 			String tableSchema=dbp.getProperty("table_schema");
 			if(!StringUtil.isSpace(tableSchema)){
@@ -98,6 +100,7 @@ public class InitListener implements ServletContextListener {
 			DBConfig.setInitConnect(dbp.getProperty("db_init_connect"));
 			DBConfig.setMaxConnect(Integer.parseInt(dbp.getProperty("db_max_connect","20")));
 			DBConfig.setQueryTimeout(Integer.parseInt(dbp.getProperty("db_query_timeout", "25")));
+			RedisConfig.initConfig(dbp.getProperty("redis_ip"), Integer.parseInt(dbp.getProperty("redis_port","6379")), dbp.getProperty("redis_auth"));
 			TransactionManager.initConnection();
 			String tableSchema=dbp.getProperty("table_schema");
 			if(!StringUtil.isSpace(tableSchema)){

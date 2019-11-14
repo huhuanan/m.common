@@ -12,11 +12,11 @@ public class CacheHostTask extends SystemTaskRun {
 	@Override
 	public void run(boolean isMain) {
 		if(isMain) {
-			int s=Integer.parseInt(DateUtil.format(new Date(), "ss"));
-			if(s%10==0) {
+			int m=Integer.parseInt(DateUtil.format(new Date(), "mm"));
+			if(m%10==0) {
 				String[] ls=CacheHost.getTimeoutCaches(20*60*1000);
 				for(String key : ls) {
-					CacheUtil.clear(key,false);
+					CacheUtil.clear(key,true);
 				}
 			}
 		}else {
