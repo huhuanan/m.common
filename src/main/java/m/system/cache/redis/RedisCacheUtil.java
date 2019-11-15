@@ -1,7 +1,5 @@
 package m.system.cache.redis;
 
-import m.system.exception.MException;
-import m.system.util.ObjectUtil;
 import m.system.util.StringUtil;
 import redis.clients.jedis.Jedis;
 
@@ -32,12 +30,6 @@ public class RedisCacheUtil {
 		Jedis m=get();
 		if(null==m) return null;
 		RedisObject ro=new RedisObject(m.get(key.getBytes()));
-		try {
-			System.out.println("get "+key+":"+ObjectUtil.toString(ro.getObj()));
-		} catch (MException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return ro.getObj();
 	}
 	/**
@@ -45,25 +37,29 @@ public class RedisCacheUtil {
 	 * @param key
 	 * @param obj
 	 */
-	public static void set(String key,Object obj) {
+	public static boolean set(String key,Object obj,int second) {
 		Jedis m=get();
-		if(null==m) return;
-		try {
-			System.out.println("set "+key+":"+ObjectUtil.toString(obj));
-		} catch (MException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		m.set(key.getBytes(),new RedisObject(obj).serialize());
+		if(null==m) return false;
+		return m.setex(key.getBytes(),second,new RedisObject(obj).serialize()).equals("OK");
+	}
+	/**
+	 * 设置缓存时间
+	 * @param key
+	 * @param second
+	 * @return
+	 */
+	public static boolean expire(String key,int second) {
+		Jedis m=get();
+		if(null==m) return false;
+		return m.expire(key.getBytes(), second)==1l;
 	}
 	/**
 	 * 删除缓存
 	 * @param key
 	 */
-	public static void del(String key) {
+	public static boolean del(String key) {
 		Jedis m=get();
-		if(null==m) return;
-		System.out.println("del "+key);
-		m.del(key.getBytes());
+		if(null==m) return false;
+		return m.del(key.getBytes())==1l;
 	}
 }

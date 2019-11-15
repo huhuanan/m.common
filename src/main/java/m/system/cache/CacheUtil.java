@@ -7,6 +7,7 @@ import m.common.model.util.QueryCondition;
 import m.common.netty.HostNettyUtil;
 import m.system.cache.model.CacheSynch;
 import m.system.cache.redis.RedisCacheUtil;
+import m.system.cache.run.CacheHostTask;
 import m.system.db.SqlBuffer;
 import m.system.exception.MException;
 import m.system.netty.NettyClient;
@@ -25,14 +26,18 @@ public class CacheUtil {
 				sendNettyGetCache(key);
 				return CacheHost.instance(key).get();
 			}
+		}else {
+			RedisCacheUtil.expire(key, CacheHostTask.getTimeoutSeconds());
 		}
 		return obj;
 	}
 	/** 添加缓存 */
 	public static void push(String key,Object obj) {
 		CacheHost.instance(key).push(obj);
-		RedisCacheUtil.set(key, obj);
-		sendNettyPushCache(key,obj);
+		if(!RedisCacheUtil.set(key, obj,CacheHostTask.getTimeoutSeconds())) {
+			//redis缓存失败才使用主机服务
+			sendNettyPushCache(key,obj);
+		}
 	}
 	/** 清除缓存 */
 	public static void clear(String key) {
