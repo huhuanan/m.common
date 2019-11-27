@@ -210,9 +210,9 @@ public class ActionFilter implements Filter {
 						}
 					}
 					if(e instanceof InvocationTargetException){
-						req.setAttribute("error", ((InvocationTargetException)e).getTargetException().getMessage());
+						req.setAttribute("error", toJsonError(((InvocationTargetException)e).getTargetException().getMessage()));
 					}else{
-						req.setAttribute("error", new StringBuffer("请求失败!").append(e.getMessage()).toString());
+						req.setAttribute("error", toJsonError(new StringBuffer("请求失败!").append(e.getMessage()).toString()));
 					}
 					//打印错误消息到前台
 					req.getRequestDispatcher("/error500.jsp").forward(req, res);//这句执行会报错. 为了跳转到500页面.
@@ -241,7 +241,7 @@ public class ActionFilter implements Filter {
 					ImageIO.write(image, "PNG", res.getOutputStream());
 					return;
 				} catch (WriterException e) {
-					req.setAttribute("error", new StringBuffer("二维码生成失败!").append(e.getMessage()).toString());
+					req.setAttribute("error", toJsonError(new StringBuffer("二维码生成失败!").append(e.getMessage()).toString()));
 					//打印错误消息到前台
 					req.getRequestDispatcher("/error500.jsp").forward(req, res);//这句执行会报错. 为了跳转到500页面.
 					return;
@@ -280,6 +280,11 @@ public class ActionFilter implements Filter {
 				if(!StringUtil.isSpace(outString)) res.getWriter().print(outString);
 			}
 		}
+	}
+	private String toJsonError(String error) {
+		JSONMessage msg=new JSONMessage();
+		msg.push("msg", error);
+		return msg.toJSONString();
 	}
 	private void setRequestCookie(HttpServletRequest request,HttpServletResponse response) {
 		Cookie[] cs=request.getCookies();

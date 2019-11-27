@@ -130,15 +130,16 @@ public class UrlMarker {
 		boolean b=false;
 		//判断路径是否允许访问
 		if(servletPath.indexOf(RuntimeData.getFilePath())==1){//文件路径
-			if(RuntimeData.accessFilePath()) {
+			//if(RuntimeData.accessFilePath()) {
 				return true;
-			}else {
-				b=true;
-			}
+			//}else {
+			//	b=true;
+			//}
 		}else{
 			for(String key : enableList){//允许列表
 				if(servletPath.indexOf(key)==0){
-					b=true; break;
+					//b=true; break;
+					return true;
 				}
 			}
 			if(!b) {
