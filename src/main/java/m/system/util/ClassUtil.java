@@ -132,7 +132,6 @@ public class ClassUtil {
 		try {
 			URL url=Thread.currentThread().getContextClassLoader().getResource(packagePath);
 			String path=url.getPath();
-			System.out.println(packageName+" - "+path);
 			int pos = path.indexOf('!');
 			path=-1==pos?path:path.substring(5, pos);
 			if(path.endsWith(".jar")) {

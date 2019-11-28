@@ -39,6 +39,7 @@ public class SystemInit {
 		String[] packs=modelPack.split(",");
 		List<Class<Model>> lastInit=new ArrayList<Class<Model>>();
 		for(int i=0;i<packs.length;i++){
+			if(StringUtil.isSpace(packs[i])) continue;
 			String[] modelNames=ClassUtil.getAllQualifiedName4Class(packs[i]);
 			for(int j=0;j<modelNames.length;j++){
 				String modelName=modelNames[j];
@@ -102,9 +103,23 @@ public class SystemInit {
 		String[] clazzs=initClass.split(",");
 		for(int i=0;i<clazzs.length;i++){
 			try {
+				if(StringUtil.isSpace(clazzs[i].trim())) continue;
 				ClassUtil.executeMethod(Class.forName(clazzs[i].trim()).newInstance(), "execute");
 			} catch (Exception e) {
 				System.err.println("初始化错误!"+e.getMessage());
+				e.printStackTrace();
+			}
+		}
+	}
+	public static void initClassInit(String initClass) {
+		if(StringUtil.isSpace(initClass)) return ;
+		String[] clazzs=initClass.split(",");
+		for(int i=0;i<clazzs.length;i++){
+			try {
+				if(StringUtil.isSpace(clazzs[i].trim())) continue;
+				ClassUtil.executeMethod(Class.forName(clazzs[i].trim()).newInstance(), "init");
+			} catch (Exception e) {
+				System.err.println("初始化配置错误!"+e.getMessage());
 				e.printStackTrace();
 			}
 		}
@@ -129,6 +144,7 @@ public class SystemInit {
 		if(StringUtil.isSpace(actionPack)) return ;
 		String[] packs=actionPack.split(",");
 		for(int i=0;i<packs.length;i++){
+			if(StringUtil.isSpace(packs[i])) continue;
 			String[] modelNames=ClassUtil.getAllQualifiedName4Class(packs[i]);
 			for(int j=0;j<modelNames.length;j++){
 				String modelName=modelNames[j];

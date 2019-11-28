@@ -83,8 +83,12 @@ public class RuntimeData {
 	private static String serverIp;
 	private static int serverPort;
 	private static String filePath;
+	private static String modelPack;
+	private static String actionPack;
 	private static String secretField;
 	private static String staticField;
+	private static String taskClass;
+	private static String initClass;
 	private static HostInfo hostInfo;//主机信息,
 	private static Boolean debug;
 	
@@ -172,12 +176,6 @@ public class RuntimeData {
 	public static void setWebPath(String webPath) {
 		RuntimeData.webPath = webPath;
 	}
-	public static String getSecretField() {
-		return secretField;
-	}
-	public static void setSecretField(String secretField) {
-		RuntimeData.secretField = secretField;
-	}
 	public static String getFilePath() {
 		return filePath;
 	}
@@ -226,11 +224,61 @@ public class RuntimeData {
 	public static void setHostInfo(HostInfo hostInfo) {
 		RuntimeData.hostInfo = hostInfo;
 	}
+	public static String getSecretField() {
+		return secretField;
+	}
+	public static void setSecretField(String secretField) {
+		RuntimeData.secretField = secretField;
+	}
+	public static void addSecretField(String... secretField) {
+		for(String field : secretField) {
+			RuntimeData.secretField+=","+field;
+		}
+	}
 	public static String getStaticField() {
 		return staticField;
 	}
 	public static void setStaticField(String staticField) {
 		RuntimeData.staticField = staticField;
+	}
+	public static void addStaticField(String... staticField) {
+		for(String field : staticField) {
+			RuntimeData.staticField+=","+field;
+		}
+	}
+	public static String getModelPack() {
+		return modelPack;
+	}
+	public static void setModelPack(String modelPack) {
+		RuntimeData.modelPack = modelPack;
+	}
+	public static void addModelPack(String... modelPack) {
+		for(String pack : modelPack) {
+			RuntimeData.modelPack+=","+pack;
+		}
+	}
+	public static String getActionPack() {
+		return actionPack;
+	}
+	public static void setActionPack(String actionPack) {
+		RuntimeData.actionPack = actionPack;
+	}
+	public static void addActionPack(String... actionPack) {
+		for(String pack : actionPack) {
+			RuntimeData.actionPack+=","+pack;
+		}
+	}
+	public static String getTaskClass() {
+		return taskClass;
+	}
+	public static void setTaskClass(String taskClass) {
+		RuntimeData.taskClass = taskClass;
+	}
+	public static String getInitClass() {
+		return initClass;
+	}
+	public static void setInitClass(String initClass) {
+		RuntimeData.initClass = initClass;
 	}
 	
 }
