@@ -105,43 +105,49 @@ public class DocumentUtil {
 			throw new MException(DocumentUtil.class,"注解DocumentModelMeta有误!"+meta.name());
 		}
 		Map<String,LinkTableMeta> linkTableMap=ModelConfig.getLinkTableMetaMap(clazz);
-		for(String field : meta.fieldNames()){
+		String[] fs=meta.fieldNames();
+		boolean[] ns=meta.notnull();
+		int nsl=ns.length;
+		for(int i=0,len=fs.length;i<len;i++){
+			String field=meta.fieldNames()[i];
 			if(field.indexOf(".")>-1){
-				int i=field.indexOf(".");
-				String fn=field.substring(0, i);
-				String newField=field.substring(i+1);
-				list.add(toParam(new StringBuffer(meta.define()).append(".").append(fn).toString(),newField,meta.notnull(),linkTableMap.get(fn).table(),actionClazz));
+				int n=field.indexOf(".");
+				String fn=field.substring(0, n);
+				String newField=field.substring(n+1);
+				list.add(toParam(new StringBuffer(meta.define()).append(".").append(fn).toString(),newField,linkTableMap.get(fn).description(),
+						i<nsl?ns[i]:false,linkTableMap.get(fn).table(),actionClazz));
 			}else{
-				list.add(toParam(meta.define(),field,meta.notnull(),clazz,actionClazz));
+				list.add(toParam(meta.define(),field,"",
+						i<nsl?ns[i]:false,clazz,actionClazz));
 			}
 		}
 		return list;
 	}
-	private static DocumentParam toParam(String define,String field,boolean notnull,Class<? extends Model> clazz,Class<? extends Action> actionClazz) throws MException{
-		TableMeta meta=ModelConfig.getTableMeta(clazz);
+	private static DocumentParam toParam(String define,String field,String description,boolean notnull,Class<? extends Model> clazz,Class<? extends Action> actionClazz) throws MException{
 		Map<String,FieldMeta> fieldMap=ModelConfig.getFieldMetaMap(clazz);
 		Map<String,LinkTableMeta> linkTableMap=ModelConfig.getLinkTableMetaMap(clazz);
 		if(field.indexOf(".")>-1){
 			int i=field.indexOf(".");
 			String fn=field.substring(0, i);
 			String newField=field.substring(i+1);
-			return toParam(new StringBuffer(define).append(".").append(fn).toString(),newField,notnull,linkTableMap.get(fn).table(),actionClazz);
+			return toParam(new StringBuffer(define).append(".").append(fn).toString(),linkTableMap.get(fn).description(),newField,
+					notnull,linkTableMap.get(fn).table(),actionClazz);
 		}else{
 			FieldMeta fm=fieldMap.get(field);
 			DocumentParam param=new DocumentParam();
 			if(null==fm&&field.equals("oid")){
 				param.setName(new StringBuffer(define).append(".oid").toString());
-				param.setDescription(new StringBuffer(meta.description()).append(" 主键").toString());
+				param.setDescription(new StringBuffer(description).append(".主键").toString());
 				param.setType(FieldType.STRING);
 				param.setLength(20);
-				param.setNotnull(!notnull);
+				param.setNotnull(notnull);
 				return param;
 			}else if(null!=fm){
 				param.setName(new StringBuffer(define).append(".").append(field).toString());
-				param.setDescription(fm.description());
+				param.setDescription(description+"."+fm.description());
 				param.setType(fm.type());
 				param.setLength(fm.length());
-				param.setNotnull(!notnull);
+				param.setNotnull(notnull);
 				return param;
 			}else{
 				throw new MException(DocumentUtil.class,actionClazz.getName()+"注解DocumentModelMeta有误!"+define+"."+field);

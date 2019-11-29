@@ -17,7 +17,7 @@ import m.system.util.ClassUtil;
 import m.system.util.StringUtil;
 
 public class ModelQueryUtil {
-	/**
+	/** 
 	 * 查询实体类
 	 * @param <T>
 	 * @param obj 查询的对象, 主键oid不能为空

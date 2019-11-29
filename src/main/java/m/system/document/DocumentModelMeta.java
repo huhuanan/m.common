@@ -29,5 +29,5 @@ public @interface DocumentModelMeta {
 	 * 是否不能为空 默认为可以为空
 	 * @return
 	 */
-	boolean notnull() default false;
+	boolean[] notnull() default {};
 }
