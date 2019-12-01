@@ -2,6 +2,7 @@ package m.system.util;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Random;
 
 import m.common.service.HostInfoService;
 /**
@@ -42,6 +43,14 @@ public class GenerateID {
 		sb.insert(0,getUnionKey());
 		toKey(sb,lastTime-913543421221l);
         return sb.insert(0,"I").toString();
+	}
+	private static Random random=new Random();
+	public static String resetKey(String key) {
+		if(StringUtil.isSpace(key)) return key;
+		int len=key.length();
+		int sp=random.nextInt(len-1)+1;
+		sp=sp>9?9:sp;
+		return new StringBuffer(len+1).append(key.substring(sp)).append(sp).append(key.substring(0, sp)).toString();
 	}
 	/**
 	 * 多服务器不唯一,数据库唯一主键不可使用
@@ -85,9 +94,10 @@ public class GenerateID {
 	public static void main(String[] s){
 		long d=new Date().getTime();
 //		generatePrimaryKeys(1000000);
-		
 		for(int i=0;i<10000;i++){
-			System.out.println(tempKey());
+			String key=tempKey();
+			System.out.println(key);
+			System.out.println(resetKey(key));
 		}
 		System.out.println(new Date().getTime()-d);
 //		Arrays.sort(chars);
