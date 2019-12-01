@@ -45,7 +45,7 @@ public class GenerateID {
         return sb.insert(0,"I").toString();
 	}
 	private static Random random=new Random();
-	public static String resetKey(String key) {
+	public static String upsetKey(String key) {
 		if(StringUtil.isSpace(key)) return key;
 		int len=key.length();
 		int sp=random.nextInt(len-1)+1;
@@ -97,7 +97,7 @@ public class GenerateID {
 		for(int i=0;i<10000;i++){
 			String key=tempKey();
 			System.out.println(key);
-			System.out.println(resetKey(key));
+			System.out.println(upsetKey(key));
 		}
 		System.out.println(new Date().getTime()-d);
 //		Arrays.sort(chars);
