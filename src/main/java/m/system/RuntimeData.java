@@ -2,6 +2,7 @@ package m.system;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,7 +24,7 @@ public class RuntimeData {
 	//set
 	public static <T extends Action> void fillAction(String action_name,Class<T> action_class){
 		if(null==actionData){
-			actionData=new HashMap<String, Class<? extends Action>>();
+			actionData=new LinkedHashMap<String, Class<? extends Action>>();
 		}
 		actionData.put(action_name, action_class);
 	}
