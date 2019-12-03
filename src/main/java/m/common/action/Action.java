@@ -108,7 +108,11 @@ public abstract class Action {
 		if(null!=sn) {
 			Object obj=CacheUtil.get(sn);
 			if(null!=obj) {
-				return (T) obj;
+				if(clazz.isAssignableFrom(obj.getClass())) {
+					return (T) obj;
+				}else {
+					return null;
+				}
 			}
 		}
 		return null;
