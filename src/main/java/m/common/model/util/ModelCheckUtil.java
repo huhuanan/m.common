@@ -162,20 +162,19 @@ public class ModelCheckUtil {
 		sql.append("SELECT oid from ").append(table.name()).append(" where 1=1 ");
 		List<Object> params=new ArrayList<Object>();
 		List<String> fn=new ArrayList<String>();
-		for(String field : fields){
+		for(int i=0,len=fields.length;i<len;i++){
+			String field=fields[i];
 			FieldMeta fmeta=fieldMap.get(field);
 			if(null!=fmeta){
-				Object value=ClassUtil.getFieldValue(model, field);
 				sql.append(" and ").append(fmeta.name()).append("=? ");
-				params.add(value);
+				params.add(values[i]);
 				fn.add(fmeta.description().split("\\|")[0]);
 			}
 			int n=field.indexOf(".");
 			LinkTableMeta lmeta=linkTableMap.get(field.substring(0,n>0?n:field.length()));
 			if(null!=lmeta){
-				Object value=ClassUtil.getFieldValue(model, field.substring(0,n>0?n:field.length()));
 				sql.append(" and ifnull(").append(lmeta.name()).append(",'')=? ");
-				params.add(null==value?"":StringUtil.noSpace(((Model)value).getOid()));
+				params.add(values[i]);
 				fn.add(lmeta.description().split("\\|")[0]);
 			}
 		}
