@@ -133,4 +133,63 @@ public class ModelCheckUtil {
 			}
 		}
 	}
+	/**
+	 * 属性匹配 model所在数据库的fields与给的values值不相等则抛异常
+	 * @param model 主键必须存在
+	 * @param fields
+	 * @param values
+	 * @throws MException
+	 * @throws SQLException
+	 */
+	public static void equals(Model model,String[] fields,Object[] values) throws MException, SQLException{
+		equals(model,fields,values,null);
+	}
+	/**
+	 * 属性匹配 model所在数据库的fields与给的values值不相等则抛异常
+	 * @param model 主键必须存在
+	 * @param fields
+	 * @param values
+	 * @param errorMessage 错误消息
+	 * @throws MException
+	 * @throws SQLException
+	 */
+	public static void equals(Model model,String[] fields,Object[] values,String errorMessage) throws MException, SQLException {
+		if(StringUtil.isSpace(model.getOid())) throw new MException(ModelCheckUtil.class,"主键为空");
+		TableMeta table=ModelConfig.getTableMeta(model.getClass());
+		Map<String,FieldMeta> fieldMap=ModelConfig.getFieldMetaMap(model.getClass());
+		Map<String,LinkTableMeta> linkTableMap=ModelConfig.getLinkTableMetaMap(model.getClass());
+		StringBuffer sql=new StringBuffer();
+		sql.append("SELECT oid from ").append(table.name()).append(" where 1=1 ");
+		List<Object> params=new ArrayList<Object>();
+		List<String> fn=new ArrayList<String>();
+		for(String field : fields){
+			FieldMeta fmeta=fieldMap.get(field);
+			if(null!=fmeta){
+				Object value=ClassUtil.getFieldValue(model, field);
+				sql.append(" and ").append(fmeta.name()).append("=? ");
+				params.add(value);
+				fn.add(fmeta.description().split("\\|")[0]);
+			}
+			int n=field.indexOf(".");
+			LinkTableMeta lmeta=linkTableMap.get(field.substring(0,n>0?n:field.length()));
+			if(null!=lmeta){
+				Object value=ClassUtil.getFieldValue(model, field.substring(0,n>0?n:field.length()));
+				sql.append(" and ifnull(").append(lmeta.name()).append(",'')=? ");
+				params.add(null==value?"":StringUtil.noSpace(((Model)value).getOid()));
+				fn.add(lmeta.description().split("\\|")[0]);
+			}
+		}
+		sql.append(" and oid=? ");
+		params.add(model.getOid());
+		DataRow dr=DBManager.queryFirstRow(sql.toString(),params.toArray(new Object[]{}));
+		if(null==dr){
+			if(StringUtil.isSpace(errorMessage)) {
+				throw new MException(ModelCheckUtil.class,new StringBuffer("(")
+				.append(ArrayUtil.connection(fn.toArray(new String[]{}), "+"))
+				.append(")不匹配!").toString());
+			}else {
+				throw new MException(ModelCheckUtil.class, errorMessage);
+			}
+		}
+	}
 }
