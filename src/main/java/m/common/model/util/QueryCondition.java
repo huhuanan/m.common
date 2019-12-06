@@ -67,67 +67,67 @@ public class QueryCondition {
 				}
 			}
 		}else if(this.isField){
+			String fn=modelQueryList.getFieldNameSql(a, this.name, clazz, false);
+			String fv=modelQueryList.getFieldNameSql(a, this.value.toString(), clazz, false);
+			fn=modelQueryList.toExpressionField(fn,"");
+			fv=modelQueryList.toExpressionField(fv,"");
 			if(this.oper.equals(OperType.EQ)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("=")
-					.append(modelQueryList.getFieldNameSql(a, this.value.toString(), clazz, false)).append(" ");
+				sql.append(" ").append(fn).append("=").append(fv).append(" ");
 			}else if(this.oper.equals(OperType.LIKE)){
-				sql.append(" INSTR(").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(",")
-					.append(modelQueryList.getFieldNameSql(a, this.value.toString(), clazz, false)).append(")>0 ");
+				sql.append(" INSTR(").append(fn).append(",").append(fv).append(")>0 ");
 			}else if(this.oper.equals(OperType.GT)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(">")
-					.append(modelQueryList.getFieldNameSql(a, this.value.toString(), clazz, false)).append(" ");
+				sql.append(" ").append(fn).append(">").append(fv).append(" ");
 			}else if(this.oper.equals(OperType.GE)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(">=")
-					.append(modelQueryList.getFieldNameSql(a, this.value.toString(), clazz, false)).append(" ");
+				sql.append(" ").append(fn).append(">=").append(fv).append(" ");
 			}else if(this.oper.equals(OperType.LT)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("<")
-					.append(modelQueryList.getFieldNameSql(a, this.value.toString(), clazz, false)).append(" ");
+				sql.append(" ").append(fn).append("<").append(fv).append(" ");
 			}else if(this.oper.equals(OperType.LE)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("<=")
-					.append(modelQueryList.getFieldNameSql(a, this.value.toString(), clazz, false)).append(" ");
+				sql.append(" ").append(fn).append("<=").append(fv).append(" ");
 			}
 		}else{
+			String fn=modelQueryList.getFieldNameSql(a, this.name, clazz, false);
+			fn=modelQueryList.toExpressionField(fn,"");
 			if(this.oper.equals(OperType.EQ)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("=? ");
+				sql.append(" ").append(fn).append("=? ");
 				valueList.add(this.value);
 			}else if(this.oper.equals(OperType.LIKE)){
-				sql.append(" INSTR(").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(",?)>0 ");
+				sql.append(" INSTR(").append(fn).append(",?)>0 ");
 				valueList.add(this.value);
 			}else if(this.oper.equals(OperType.ISNULL)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" IS NULL ");
+				sql.append(" ").append(fn).append(" IS NULL ");
 			}else if(this.oper.equals(OperType.NOTNULL)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" IS NOT NULL ");
+				sql.append(" ").append(fn).append(" IS NOT NULL ");
 			}else if(this.oper.equals(OperType.ISEMPTY)){
-				sql.append(" (").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" IS NULL OR ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("='')");
+				sql.append(" (").append(fn).append(" IS NULL OR ").append(fn).append("='')");
 			}else if(this.oper.equals(OperType.NOTEMPTY)){
-				sql.append(" (").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" IS NOT NULL AND ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("!='')");
+				sql.append(" (").append(fn).append(" IS NOT NULL AND ").append(fn).append("!='')");
 			}else if(this.oper.equals(OperType.GT)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(">? ");
+				sql.append(" ").append(fn).append(">? ");
 				valueList.add(this.value);
 			}else if(this.oper.equals(OperType.GE)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(">=? ");
+				sql.append(" ").append(fn).append(">=? ");
 				valueList.add(this.value);
 			}else if(this.oper.equals(OperType.LT)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("<? ");
+				sql.append(" ").append(fn).append("<? ");
 				valueList.add(this.value);
 			}else if(this.oper.equals(OperType.LE)){
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append("<=? ");
+				sql.append(" ").append(fn).append("<=? ");
 				valueList.add(this.value);
 			}else if(this.oper.equals(OperType.IN)){
 				QueryParameter qp=((ModelQueryList) this.value).getQueryParameter();
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" IN(").append(qp.getSql()).append(") ");
+				sql.append(" ").append(fn).append(" IN(").append(qp.getSql()).append(") ");
 				valueList.addAll(qp.getValueList());
 			}else if(this.oper.equals(OperType.INSQL)){
 				QueryParameter qp=(QueryParameter) this.value;
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" IN(").append(qp.getSql()).append(") ");
+				sql.append(" ").append(fn).append(" IN(").append(qp.getSql()).append(") ");
 				valueList.addAll(qp.getValueList());
 			}else if(this.oper.equals(OperType.NOTIN)){
 				QueryParameter qp=((ModelQueryList) this.value).getQueryParameter();
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" NOT IN(").append(qp.getSql()).append(") ");
+				sql.append(" ").append(fn).append(" NOT IN(").append(qp.getSql()).append(") ");
 				valueList.addAll(qp.getValueList());
 			}else if(this.oper.equals(OperType.NOTINSQL)){
 				QueryParameter qp=(QueryParameter) this.value;
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" NOT IN(").append(qp.getSql()).append(") ");
+				sql.append(" ").append(fn).append(" NOT IN(").append(qp.getSql()).append(") ");
 				valueList.addAll(qp.getValueList());
 			}else if(this.oper.equals(OperType.INS)){
 				Object[] objs=(Object[]) this.value;
@@ -136,10 +136,10 @@ public class QueryCondition {
 					ins.append(",?");
 					valueList.add(obj);
 				}
-				sql.append(" ").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" IN(").append(ins.substring(1)).append(")") ;
+				sql.append(" ").append(fn).append(" IN(").append(ins.substring(1)).append(")") ;
 			}else if(this.oper.equals(OperType.BETWEEN)){
 				Object[] objs=(Object[]) this.value;
-				sql.append(" (").append(modelQueryList.getFieldNameSql(a, this.name, clazz, false)).append(" BETWEEN ? AND ?) ");
+				sql.append(" (").append(fn).append(" BETWEEN ? AND ?) ");
 				valueList.add(objs[0]);
 				valueList.add(objs[1]);
 			}

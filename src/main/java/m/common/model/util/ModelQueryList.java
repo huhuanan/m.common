@@ -137,6 +137,14 @@ public class ModelQueryList {
 		}
 		return this.fieldNameSqlList;
 	}
+	protected String toExpressionField(String nameSql,String a) {
+		String fn=expressionField.get(nameSql);
+		if(null==fn) {
+			return nameSql+a;
+		}else {
+			return fn+a;
+		}
+	}
 	/**
 	 * 递归方法,  返回对应的查询的fieldName, 并添加需要left join的 table
 	 * @param a
@@ -235,12 +243,8 @@ public class ModelQueryList {
 				for(QueryOrder order : this.orders){
 					if(null!=order&&!StringUtil.isSpace(order.getName())) {
 						String os=order.toSqlString("t0", table, this);
-						String fn=expressionField.get(os.substring(0,os.lastIndexOf(" ")));
-						if(StringUtil.isSpace(fn)) {
-							orderSql.append(os).append(",");
-						}else {
-							orderSql.append(fn).append(os.substring(os.lastIndexOf(" "))).append(",");
-						}
+						String fn=toExpressionField(os.substring(0,os.lastIndexOf(" ")),os.substring(os.lastIndexOf(" ")));
+						orderSql.append(fn).append(",");
 					}
 				}
 				orderSql.append(QueryOrder.desc("oid").toSqlString("t0", table, this));
