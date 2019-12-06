@@ -41,6 +41,7 @@ public class ModelQueryList {
 	private List<String> fieldNameSqlList;
 	private Map<String,String> fieldToAliasMap;
 	private Map<String,String> expressionMap;
+	private Map<String,String> expressionField;
 	private ModelQueryList(Class<? extends Model> clazz,String[] fieldNames,QueryPage page,QueryCondition condition,boolean isGroup,Map<String,String> expressionMap,QueryOrder... orders){
 		this.table=clazz;
 		List<String> fieldList=new ArrayList<String>();
@@ -54,6 +55,7 @@ public class ModelQueryList {
 		this.isGroup=isGroup;
 		this.orders=orders;
 		this.expressionMap=expressionMap;
+		this.expressionField=new HashMap<String, String>();
 		this.tableAMap=new HashMap<String, String>();
 		this.linkTableSqlMap=new LinkedHashMap<String, String>();
 		this.fieldToAliasMap=new HashMap<String, String>();
@@ -121,6 +123,7 @@ public class ModelQueryList {
 							fieldToAliasMap.put(ns, fn1.substring(fn1.lastIndexOf(" ")+1));
 							exp=exp.replace(str, fn1.substring(0,fn1.lastIndexOf(" ")));
 						}
+						this.expressionField.put(fn.substring(0,fn.lastIndexOf(" ")),exp);
 						fieldNameSqlList.add(exp+fn.substring(fn.lastIndexOf(" ")));
 					}else{
 						if(!StringUtil.isSpace(fn)){
@@ -230,8 +233,15 @@ public class ModelQueryList {
 			StringBuffer orderSql=new StringBuffer();
 			if(null!=this.orders){
 				for(QueryOrder order : this.orders){
-					if(null!=order&&!StringUtil.isSpace(order.getName()))
-						orderSql.append(order.toSqlString("t0", table, this)).append(",");
+					if(null!=order&&!StringUtil.isSpace(order.getName())) {
+						String os=order.toSqlString("t0", table, this);
+						String fn=expressionField.get(os.substring(0,os.lastIndexOf(" ")));
+						if(StringUtil.isSpace(fn)) {
+							orderSql.append(os).append(",");
+						}else {
+							orderSql.append(fn).append(os.substring(os.lastIndexOf(" "))).append(",");
+						}
+					}
 				}
 				orderSql.append(QueryOrder.desc("oid").toSqlString("t0", table, this));
 			}
