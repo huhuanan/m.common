@@ -331,11 +331,28 @@ public class DateUtil {
 		calendar.add(ci, num);
 		return calendar.getTime();
 	}
+	
+	public static int getWeekDay(Date date) {
+		Calendar now = Calendar.getInstance();
+		now.setTime(date);
+		//一周第一天是否为星期天
+		boolean isFirstSunday = (now.getFirstDayOfWeek() == Calendar.SUNDAY);
+		//获取周几
+		int weekDay = now.get(Calendar.DAY_OF_WEEK);
+		//若一周第一天为星期天，则-1
+		if(isFirstSunday){
+			weekDay = weekDay - 1;
+		}else if(weekDay==7){
+			weekDay=0;
+		}
+		return weekDay;
+	}
 	private static SimpleDateFormat getFormatter(String parttern) {
 		return new SimpleDateFormat(parttern);
 	}
 	public static void main(String[] a ){
-		System.out.println(getAddDate(new Date(), 10));
+		System.out.println(getWeekDay(format("2019-12-14","yyyy-MM-dd")));
+//		System.out.println(getAddDate(new Date(), 10));
 //		System.out.println("2015-06".compareTo("2015-05"));  //1
 //		System.out.println("2015-06".compareTo("2015-06"));  //0
 //		System.out.println("2015-06".compareTo("2015-07"));  //-1
@@ -345,6 +362,6 @@ public class DateUtil {
 //		System.out.println(toFormatShow(format("2017-04-10 19:01", "yyyy-MM-dd HH:mm")));
 //		System.out.println(toFormatShow(format("2017-03-14 19:01", "yyyy-MM-dd HH:mm")));
 //		System.out.println(toFormatShow(format("2016-03-14 19:01", "yyyy-MM-dd HH:mm")));
-		System.out.println(format(getEndDay(getLastDay(DateUtil.getAddMonth(new Date(), 24))), "yyyy-MM-dd HH:mm:ss.SSS"));
+//		System.out.println(format(getEndDay(getLastDay(DateUtil.getAddMonth(new Date(), 24))), "yyyy-MM-dd HH:mm:ss.SSS"));
 	}
 }
