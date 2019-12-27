@@ -7,6 +7,7 @@ import java.util.Map;
 import m.common.action.Action;
 import m.common.action.ActionMeta;
 import m.common.model.FieldMeta;
+import m.common.model.HostInfo;
 import m.common.model.LinkTableMeta;
 import m.common.model.Model;
 import m.common.model.TableMeta;
@@ -95,6 +96,9 @@ public class SystemInit {
 			HostNettyUtil.openClient(ip, port);
 			HostNettyUtil.done();
 		}else{
+			HostInfo host=new HostInfo();
+			host.setIpport(".");
+			HostInfoService.setHostInfo(".", host);
 			HostInfoService.setMainHost(".");
 		}
 	}

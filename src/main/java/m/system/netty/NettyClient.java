@@ -40,6 +40,7 @@ public class NettyClient<T extends Object> extends NettyObject<NettyClient<T>> {
 					    String ipport=ctx.channel().localAddress().toString();
 					    T result=event.readOrReturn(ipport, msg);
 				        if(null!=result){
+				        	event.sendBefore(ipport, result);
 				        	ctx.channel().writeAndFlush(result);
 				        	event.sendCallback(ipport, result);
 				        }
@@ -94,6 +95,7 @@ public class NettyClient<T extends Object> extends NettyObject<NettyClient<T>> {
 	public boolean send(T msg) {
 		boolean b=false;
 		if(null!=channel){
+			event.sendBefore(channel.channel().localAddress().toString(), msg);
 			try {
 				channel.channel().writeAndFlush(msg).sync();
 			} catch (InterruptedException e) { }

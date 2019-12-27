@@ -172,7 +172,11 @@ public class ActionUtil {
 				setMapAttribute(object[1], paramName.substring(n), paramValue);
 			}
 		}else{
-			ClassUtil.setFieldValue(action, paramName, paramValue);
+			if(Map.class.isAssignableFrom(action.getClass())) {
+				((Map)action).put(paramName, paramValue);
+			}else {
+				ClassUtil.setFieldValue(action, paramName, paramValue);
+			}
 		}
 	}
 	@SuppressWarnings("unchecked")

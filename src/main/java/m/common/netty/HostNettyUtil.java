@@ -1,5 +1,7 @@
 package m.common.netty;
 
+import java.util.Random;
+
 import m.system.netty.NettyClient;
 import m.system.netty.NettyMessage;
 import m.system.netty.NettyServer;
@@ -28,17 +30,20 @@ public class HostNettyUtil {
 	 * @param port
 	 */
 	public static void openServer(int port) {
-		server=new NettyServer<NettyMessage>(new HostNettyServerEvent(),port);
-		server.setTimerTask(new HostNettyServerTimer(), 10000);
-		new Thread() {
-			public void run() {
-				try {
-					server.open();
-				} catch (Exception e) {
-					System.out.println("主机服务启动失败:"+e.getMessage());
+		if(null==server) {
+			server=new NettyServer<NettyMessage>(new HostNettyServerEvent(),port);
+			server.setTimerTask(new HostNettyServerTimer(), 10000);
+			new Thread() {
+				public void run() {
+					try {
+						server.open();
+					} catch (Exception e) {
+						System.out.println("主机服务启动失败:"+e.getMessage());
+						//e.printStackTrace();
+					}
 				}
-			}
-		}.start();
+			}.start();
+		}
 	}
 	/**
 	 * 关闭服务端
@@ -69,20 +74,22 @@ public class HostNettyUtil {
 	 * @param port
 	 */
 	public static void openClient(String ip,int port) {
-		clientIp=ip;
-		clientPort=port;
-		client=new NettyClient<NettyMessage>(new HostNettyClientEvent(),ip,port);
-		client.setTimerTask(new HostNettyClientTimer(), 10000);
-		new Thread() {
-			public void run() {
-				try {
-					client.open();
-				} catch (Exception e) {
-					System.out.println("主机客户端启动失败:"+e.getMessage());
-					HostNettyUtil.reopenClient();
+		if(null==client) {
+			clientIp=ip;
+			clientPort=port;
+			client=new NettyClient<NettyMessage>(new HostNettyClientEvent(),ip,port);
+			client.setTimerTask(new HostNettyClientTimer(), 10000);
+			new Thread() {
+				public void run() {
+					try {
+						client.open();
+					} catch (Exception e) {
+						System.out.println("主机客户端启动失败:"+e.getMessage());
+						HostNettyUtil.reopenClient();
+					}
 				}
-			}
-		}.start();
+			}.start();
+		}
 	}
 	/**
 	 * 关闭客户端
@@ -105,7 +112,7 @@ public class HostNettyUtil {
 		closeClient(isClient);
 		if(isClient) {
 			try {
-				Thread.sleep(5000); //延迟五秒启动
+				Thread.sleep(5000+new Random().nextInt(5000)); //延迟五秒启动
 			} catch (InterruptedException e) { }
 			System.out.println("主机客户端重启");
 			openClient(clientIp, clientPort);
@@ -117,15 +124,5 @@ public class HostNettyUtil {
 	 */
 	public static NettyClient<NettyMessage> getClient() {
 		return client;
-	}
-	/**
-	 * 获取ip部分
-	 * @param ipport
-	 * @return
-	 */
-	public static String getIp(String ipport) {
-		String ip=ipport;
-		if(ip.indexOf("/")==0) ip=ip.substring(1);
-		return ip.split(":")[0];
 	}
 }

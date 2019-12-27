@@ -83,6 +83,7 @@ public class RuntimeData {
 	private static String webPath;
 	private static String serverIp;
 	private static int serverPort;
+	private static String serverAuth;
 	private static String filePath;
 	private static String modelPack;
 	private static String actionPack;
@@ -218,6 +219,12 @@ public class RuntimeData {
 	}
 	public static void setServerPort(int serverPort) {
 		RuntimeData.serverPort = serverPort;
+	}
+	public static String getServerAuth() {
+		return serverAuth;
+	}
+	public static void setServerAuth(String serverAuth) {
+		RuntimeData.serverAuth = serverAuth;
 	}
 	public static HostInfo getHostInfo() {
 		return hostInfo;

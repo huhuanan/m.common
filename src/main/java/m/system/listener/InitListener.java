@@ -34,17 +34,17 @@ public class InitListener implements ServletContextListener {
 			//加载配置信息
 			RuntimeData.setClassPath(Thread.currentThread().getContextClassLoader().getResource("/").getPath());
 			RuntimeData.setWebPath(RuntimeData.getClassPath().substring(0, RuntimeData.getClassPath().indexOf("WEB-INF/classes/")));
-			RuntimeData.setFilePath(StringUtil.noSpace(p.getProperty("file_path")));
-			RuntimeData.setSecretField(StringUtil.noSpace(p.getProperty("secret_field")));
-			RuntimeData.setStaticField(StringUtil.noSpace(p.getProperty("static_field")));
-			RuntimeData.setModelPack(StringUtil.noSpace(p.getProperty("model_pack")));
-			RuntimeData.setActionPack(StringUtil.noSpace(p.getProperty("action_pack")));
-			RuntimeData.setDebug(StringUtil.noSpace(p.getProperty("debug")).equals("true")?true:false);
-			RuntimeData.setDomainClass(StringUtil.noSpace(p.getProperty("domain_class")));
-			RuntimeData.setLogClass(StringUtil.noSpace(p.getProperty("log_class")));
-			RuntimeData.setSystemClass(StringUtil.noSpace(p.getProperty("systeminfo_class")));
-			RuntimeData.setTaskClass(StringUtil.noSpace(p.getProperty("task_class")));
-			RuntimeData.setInitClass(StringUtil.noSpace(p.getProperty("init_class")));
+			RuntimeData.setFilePath(StringUtil.noSpace(p.getProperty("file_path")).trim());
+			RuntimeData.setSecretField(StringUtil.noSpace(p.getProperty("secret_field")).trim());
+			RuntimeData.setStaticField(StringUtil.noSpace(p.getProperty("static_field")).trim());
+			RuntimeData.setModelPack(StringUtil.noSpace(p.getProperty("model_pack")).trim());
+			RuntimeData.setActionPack(StringUtil.noSpace(p.getProperty("action_pack")).trim());
+			RuntimeData.setDebug(StringUtil.noSpace(p.getProperty("debug")).trim().equals("true")?true:false);
+			RuntimeData.setDomainClass(StringUtil.noSpace(p.getProperty("domain_class")).trim());
+			RuntimeData.setLogClass(StringUtil.noSpace(p.getProperty("log_class")).trim());
+			RuntimeData.setSystemClass(StringUtil.noSpace(p.getProperty("systeminfo_class")).trim());
+			RuntimeData.setTaskClass(StringUtil.noSpace(p.getProperty("task_class")).trim());
+			RuntimeData.setInitClass(StringUtil.noSpace(p.getProperty("init_class")).trim());
 			
 			SystemInit.initClassInit(RuntimeData.getInitClass());
 			
@@ -60,8 +60,9 @@ public class InitListener implements ServletContextListener {
 			}
 			SystemInit.initModel(RuntimeData.getModelPack());
 			
-			RuntimeData.setServerIp(StringUtil.noSpace(dbp.getProperty("server_ip")));
-			RuntimeData.setServerPort(Integer.parseInt(dbp.getProperty("redis_port","8128")));
+			RuntimeData.setServerIp(StringUtil.noSpace(dbp.getProperty("server_ip")).trim());
+			RuntimeData.setServerPort(Integer.parseInt(dbp.getProperty("server_port","8128").trim()));
+			RuntimeData.setServerAuth(StringUtil.noSpace(dbp.getProperty("server_auth")).trim());
 			SystemInit.initServerGroup(RuntimeData.getServerIp(), RuntimeData.getServerPort());
 
 			SystemInit.initModelTable();

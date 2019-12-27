@@ -15,7 +15,6 @@ import m.system.util.NumberUtil;
 import m.system.util.StringUtil;
 
 public class HostInfoService extends Service {
-	private static int currentTotal=1;
 	private static int currentOid=0;
 	private static HostInfo currentHost=new HostInfo();
 	public static HostInfo getCurrentHost(){
@@ -34,7 +33,6 @@ public class HostInfoService extends Service {
 	public List<HostInfo> getList(){
 		resetCurrentHostOtherInfo();
 		List<HostInfo> list= new ArrayList<HostInfo>(hostMap.values());
-		System.out.println("主机list:"+list.size());
 		return list;
 	}
 	private static long lastLong=0l;
@@ -49,13 +47,23 @@ public class HostInfoService extends Service {
 			lastLong=System.currentTimeMillis();
 			List<String> ls=new ArrayList<String>();
 			for(HostInfo hi : hostMap.values()) {
-				if(!hi.getIp().equals(".")) ls.add("http://"+hi.getIp()+"/");
+				if(!hi.getIpport().equals(".")) ls.add("http://"+getIp(hi.getIpport())+"/");
 			}
 			if(!StringUtil.isSpace(other)) ls.add(other);
 			ips=ls.toArray(new String[] {});
 		}
 		if(ips.length>0) return ips[random.nextInt(ips.length)];
 		else return "";
+	}
+	/**
+	 * 获取ip部分
+	 * @param ipport
+	 * @return
+	 */
+	private static String getIp(String ipport) {
+		String ip=ipport;
+		if(ip.indexOf("/")==0) ip=ip.substring(1);
+		return ip.split(":")[0];
 	}
 	public static void resetCurrentHostOtherInfo(){
 		if(null!=currentHost){
@@ -65,7 +73,7 @@ public class HostInfoService extends Service {
 			int maxMemory = NumberUtil.toInt(Runtime.getRuntime().maxMemory() / mb *100);
 			int dbUseLinkNum = DBConnection.getUseLinkNum();
 			int dbMaxLinkNum = DBConnection.getMaxLinkNum();
-			HostInfo hi=hostMap.get(currentHost.getIp());
+			HostInfo hi=hostMap.get(currentHost.getIpport());
 			if(null!=hi){
 				hi.setTotalMemory(totalMemory/100.0);
 				hi.setFreeMemory(freeMemory/100.0);
@@ -85,19 +93,16 @@ public class HostInfoService extends Service {
 	}
 	/**
 	 * 主控初始化自己
-	 * @param ip
+	 * @param ipport
 	 */
-	public static void setMainHost(String ip) {
-		HostInfo host=new HostInfo();
-		host.setOid(String.valueOf(currentOid));
-		host.setIp(ip);
-		host.setTotal(0);
-		setHostInfo(ip, host);
+	public static void setMainHost(String ipport) {
+		HostInfo host=hostMap.get(ipport);
+		setHostInfo(ipport, host);
 		setCurrentHost(host);
-		System.out.println("主机数:"+hostMap.size());
 	}
 	public static boolean isMainHost() {
-		if(currentHost.getIp().indexOf(RuntimeData.getServerIp())>=0) {
+		if(currentHost.getIpport().equals(".")) return true;
+		if(currentHost.getIpport().indexOf(RuntimeData.getServerIp()+":")>=0) {
 			return true;
 		}else {
 			return false;
@@ -108,9 +113,9 @@ public class HostInfoService extends Service {
 	 * @param ip
 	 * @param host
 	 */
-	public static void setHostInfo(String ip,HostInfo host) {
-		host.setOid(String.valueOf(getHostOid(ip)));
-		hostMap.put(ip, host);
+	public static void setHostInfo(String ipport,HostInfo host) {
+		host.setOid(String.valueOf(getHostOid(ipport)));
+		hostMap.put(ipport, host);
 	}
 	/**
 	 * 返回主机map 服务端调用
@@ -137,17 +142,17 @@ public class HostInfoService extends Service {
 	 * 移除指定ip主机信息 服务器调用
 	 * @param ip
 	 */
-	public static void removeHost(String ip) {
-		hostMap.remove(ip);
+	public static void removeHost(String ipport) {
+		hostMap.remove(ipport);
 	}
 	/**
 	 * 设置主机map 客户端调用
 	 * @param ipport
 	 * @param hostMap
 	 */
-	public static void setHostMap(String ip,Map<String, HostInfo> hostMap) {
+	public static void setHostMap(String ipport,Map<String, HostInfo> hostMap) {
 		for(HostInfo host : hostMap.values()) {
-			if(host.getIp().equals(ip)) {
+			if(host.getIpport().equals(ipport)) {
 				setCurrentHost(host);
 			}
 		}
@@ -155,16 +160,6 @@ public class HostInfoService extends Service {
 		resetCurrentHostOtherInfo();
 	}
 	
-	
-	public static int getCurrentTotal() {
-		return currentTotal;
-	}
-	public static void setCurrentTotal(int currentTotal) {
-		HostInfoService.currentTotal = currentTotal;
-	}
-	public static void addCurrentTotal(int currentTotal) {
-		HostInfoService.currentTotal += currentTotal;
-	}
 	public static int getCurrentOid() {
 		return currentOid;
 	}

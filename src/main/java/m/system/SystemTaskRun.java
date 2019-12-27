@@ -6,7 +6,6 @@ import org.quartz.JobExecutionException;
 
 import m.common.service.HostInfoService;
 import m.system.db.TransactionManager;
-import m.system.exception.MException;
 import m.system.util.ClassUtil;
 
 public abstract class SystemTaskRun implements Job {

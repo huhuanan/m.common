@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import m.system.lang.HtmlBodyContent;
 import m.system.lang.IJsonOuter;
 import m.system.util.JSONMessage;
 

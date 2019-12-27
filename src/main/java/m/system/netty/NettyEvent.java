@@ -16,6 +16,14 @@ public abstract class NettyEvent<T extends Object> {
 	 */
 	public abstract T readOrReturn(String ipport,T msg);
 	/**
+	 * 发送前处理
+	 * @param ipport
+	 * @param msg
+	 */
+	public void sendBefore(String ipport,T msg) {
+		
+	};
+	/**
 	 * 发送回调 readOrReturn也会调用
 	 * @param ipport
 	 * @param result 发送的内容

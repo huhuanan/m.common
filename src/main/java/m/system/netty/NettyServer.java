@@ -48,6 +48,7 @@ public class NettyServer<T extends Object> extends NettyObject<NettyServer<T>> {
 						    String ipport=ctx.channel().remoteAddress().toString();
 						    T result=event.readOrReturn(ipport, msg);
 					        if(null!=result){
+					        	event.sendBefore(ipport, result);
 					        	ctx.channel().writeAndFlush(result);
 					        	event.sendCallback(ipport, result);
 					        }
@@ -120,6 +121,7 @@ public class NettyServer<T extends Object> extends NettyObject<NettyServer<T>> {
 	 */
 	public boolean send(String ipport,T msg) {
 		boolean b=false;
+		event.sendBefore(ipport, msg);
 		ChannelHandlerContext ctx=channelMap.get(ipport);
 		if(null!=ctx){
 			try {
@@ -137,6 +139,7 @@ public class NettyServer<T extends Object> extends NettyObject<NettyServer<T>> {
 	 */
 	public void sendAll(T msg) {
 		for(String ipport : channelMap.keySet()){
+			event.sendBefore(ipport, msg);
 			try {
 				channelMap.get(ipport).channel().writeAndFlush(msg).sync();
 			} catch (InterruptedException e) { }

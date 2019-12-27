@@ -11,7 +11,6 @@ import m.common.action.ActionMeta;
 import m.common.model.FieldMeta;
 import m.common.model.LinkTableMeta;
 import m.common.model.Model;
-import m.common.model.TableMeta;
 import m.common.model.config.ModelConfig;
 import m.common.model.type.FieldType;
 import m.system.RuntimeData;

@@ -6,8 +6,6 @@ import m.common.model.type.FieldType;
 
 public class HostInfo extends Model {
 
-	@FieldMeta(name="ip",type=FieldType.STRING,length=20,description="ip")
-	private String ip;
 	@FieldMeta(name="ipport",type=FieldType.STRING,length=20,description="ipport")
 	private String ipport;
 	@FieldMeta(name="total",type=FieldType.INT,description="total")
@@ -46,12 +44,6 @@ public class HostInfo extends Model {
 	}
 	public void setDbUseLinkNum(Integer dbUseLinkNum) {
 		this.dbUseLinkNum = dbUseLinkNum;
-	}
-	public String getIp() {
-		return ip;
-	}
-	public void setIp(String ip) {
-		this.ip = ip;
 	}
 	public Integer getTotal() {
 		return total;
