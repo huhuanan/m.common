@@ -1,6 +1,6 @@
 package m.system.util;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import m.system.exception.MException;
@@ -22,28 +22,12 @@ public class ArrayUtil {
 		return stringBuffer.toString();
 	}
 	/**
-	 * 组合两个数组
-	 * @param arr
-	 * @param s
-	 * @return
-	 */
-	public static String[] toArray(String[] arr,String... s){
-		List<String> list=new ArrayList<String>();
-		for(String o : arr) {
-			list.add(o);
-		}
-		for(String o : s) {
-			list.add(o);
-		}
-		return list.toArray(new String[] {});
-	}
-	/**
 	 * 数组中是否包含对象
 	 * @param arrays
 	 * @param obj
 	 * @return
 	 */
-	public static boolean isContain(Object[] arrays,Object obj){
+	public static <T> boolean isContain(T[] arrays,T obj){
 		for(int i=0;i<arrays.length;i++){
 			if(obj.equals(arrays[i])){
 				return true;
@@ -52,20 +36,17 @@ public class ArrayUtil {
 		return false;
 	}
 	/**
-	 * 数组中移出对象
-	 * @param arrays
-	 * @param obj
+	 * 数组合并
+	 * @param <T>
+	 * @param first
+	 * @param second
 	 * @return
 	 */
-	public static Object[] removeObject(Object[] arrays,Object obj){
-		List<Object> list=new ArrayList<Object>();
-		for(Object o : arrays){
-			if(!obj.equals(o)){
-				list.add(o);
-			}
-		}
-		return list.toArray(new Object[]{});
-	}
+	public static <T> T[] concat(T[] first, T[] second) {
+		T[] result = Arrays.copyOf(first, first.length + second.length);
+		System.arraycopy(second, 0, result, first.length, second.length);
+		return result;
+	}  
 	/**
 	 * 转换对象为字符串的展现形式.
 	 * @param list
@@ -93,7 +74,9 @@ public class ArrayUtil {
 	}
 	public static void main(String[] args) {
 		Object[] a=new Object[]{1,"1",2,"3"};
-		a=ArrayUtil.removeObject(a, 2);
+		Object[] aa=concat(a, a);
+//		a=ArrayUtil.removeObject(a, 2);
 		System.out.println(ArrayUtil.connection(a, ","));
+		System.out.println(ArrayUtil.connection(aa, ","));
 	}
 }
