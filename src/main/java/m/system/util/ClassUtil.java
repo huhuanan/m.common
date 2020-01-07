@@ -19,7 +19,7 @@ import m.system.exception.MException;
 
 
 public class ClassUtil {
-	public static void main(String[] a){
+	public static void main(String[] a){ 
 //		a=getAllQualifiedName4Class("m.base.model");
 //		for(int i=0;i<a.length;i++){
 //			System.out.println(a[i]);
