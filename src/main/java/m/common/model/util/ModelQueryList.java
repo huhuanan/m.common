@@ -453,6 +453,9 @@ public class ModelQueryList {
 	public static <T extends Model> T getModel(T obj,String[] fieldNames) throws Exception{
 		return getModel(obj,fieldNames,true);
 	}
+	public static <T extends Model> T getModel(Class<T> clazz,String oid,String[] fieldNames) throws Exception{
+		return getModel(clazz,oid,fieldNames,true);
+	}
 	/**
 	 * 获取对象
 	 * @param obj
@@ -462,7 +465,10 @@ public class ModelQueryList {
 	 * @throws Exception
 	 */
 	public static <T extends Model> T getModel(T obj,String[] fieldNames,boolean isStatic) throws Exception{
-		ModelQueryList util=ModelQueryList.instance(obj.getClass(), fieldNames, new QueryPage(0,1), QueryCondition.eq("oid", obj.getOid()));
+		return (T) getModel(obj.getClass(),obj.getOid(), fieldNames, isStatic);
+	}
+	public static <T extends Model> T getModel(Class<T> clazz,String oid,String[] fieldNames,boolean isStatic) throws Exception{
+		ModelQueryList util=ModelQueryList.instance(clazz, fieldNames, new QueryPage(0,1), QueryCondition.eq("oid", oid));
 		util.setUseStaticField(isStatic);
 		List<T> list=(List<T>)util.getModelList(util);
 		if(list.size()>0){

@@ -32,7 +32,7 @@ public class InitListener implements ServletContextListener {
 			p.load(inputStream);
 			dbp.load(dbStream);
 			//加载配置信息
-			RuntimeData.setClassPath(Thread.currentThread().getContextClassLoader().getResource("/").getPath());
+			RuntimeData.setClassPath(Thread.currentThread().getContextClassLoader().getResource("").getPath());
 			RuntimeData.setWebPath(RuntimeData.getClassPath().substring(0, RuntimeData.getClassPath().indexOf("WEB-INF/classes/")));
 			RuntimeData.setFilePath(StringUtil.noSpace(p.getProperty("file_path")).trim());
 			RuntimeData.setSecretField(StringUtil.noSpace(p.getProperty("secret_field")).trim());
@@ -89,7 +89,7 @@ public class InitListener implements ServletContextListener {
 			p.load(inputStream);
 			dbp.load(dbStream);
 			//加载配置信息
-			RuntimeData.setClassPath(Thread.currentThread().getContextClassLoader().getResource("/").getPath());
+			RuntimeData.setClassPath(Thread.currentThread().getContextClassLoader().getResource("").getPath());
 			//RuntimeData.setWebPath(RuntimeData.getClassPath().substring(0, RuntimeData.getClassPath().indexOf("WEB-INF/classes/")));
 			RuntimeData.setFilePath(StringUtil.noSpace(p.getProperty("file_path")));
 			RuntimeData.setSecretField(StringUtil.noSpace(p.getProperty("secret_field")));
