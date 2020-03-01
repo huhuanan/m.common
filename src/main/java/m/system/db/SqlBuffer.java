@@ -26,23 +26,11 @@ public class SqlBuffer {
 	}
 	/**
 	 * 添加sql片段
-	 * @param sqlPart 片段为空则不添加
-	 * @param param 参数
-	 * @return
-	 */
-	public SqlBuffer append(String sqlPart,Object param) {
-		if(StringUtil.isSpace(sqlPart)) return this;
-		sql.append(sqlPart).append(" ");
-		paramList.add(param);
-		return this;
-	}
-	/**
-	 * 添加sql片段
 	 * @param sqlPart
 	 * @param params
 	 * @return
 	 */
-	public SqlBuffer append(String sqlPart,Object[] params) {
+	public SqlBuffer append(String sqlPart,Object... params) {
 		if(StringUtil.isSpace(sqlPart)) return this;
 		sql.append(sqlPart).append(" ");
 		for(Object obj : params) {

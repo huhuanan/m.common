@@ -159,6 +159,19 @@ public class QueryCondition {
 		return new QueryCondition(names,OperType.EQ);
 	}
 	/**
+	 * 包含 生成多个QueryCondition
+	 * @param name
+	 * @param value
+	 * @return
+	 */
+	public static List<QueryCondition> manyEq(String name,Object[] value){
+		List<QueryCondition> qcs=new ArrayList<QueryCondition>();
+		for(int i=0;i<value.length;i++){
+			qcs.add(eq(name, value[i]));
+		}
+		return qcs;
+	}
+	/**
 	 * 包含
 	 * @param name
 	 * @param value

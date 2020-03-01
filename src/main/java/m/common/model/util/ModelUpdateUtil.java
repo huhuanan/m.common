@@ -177,7 +177,7 @@ public class ModelUpdateUtil {
 			}
 		}
 		for(String key : linkTableMap.keySet()){
-			if(!flag||ArrayUtil.isContain(fields, key+".oid")){
+			if(!flag||ArrayUtil.isContain(fields, key+".oid")||ArrayUtil.isContain(fields, key)){
 				LinkTableMeta linkTable=linkTableMap.get(key);
 				fieldString.append(",").append(linkTable.name()).append("=?");
 				Object bean=ClassUtil.getFieldValue(obj, key);

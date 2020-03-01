@@ -1,5 +1,6 @@
 package m.system.util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,20 @@ public class ArrayUtil {
 			}
 		}
 		return false;
+	}
+	/**
+	 * 返回非空的数组项
+	 * @param arrays
+	 * @return
+	 */
+	public static String[] toNoEmptyArray(String[] arrays) {
+		List<String> ls=new ArrayList<String>();
+		for(String t : arrays) {
+			if(!StringUtil.isSpace(t)) {
+				ls.add(t);
+			}
+		}
+		return ls.toArray(new String[] {});
 	}
 	/**
 	 * 数组合并

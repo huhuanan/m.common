@@ -478,7 +478,10 @@ public class ModelQueryList {
 		}
 	}
 	public static<T extends Model> T getModel(Class<T> clazz,String[] fieldNames,QueryCondition condition) throws SQLException, MException {
-		List<T> list=(List<T>) getModelList(clazz, fieldNames, new QueryPage(0,1), condition,QueryOrder.desc("oid"));
+		return getModel(clazz,fieldNames,condition,QueryOrder.desc("oid"));
+	}
+	public static<T extends Model> T getModel(Class<T> clazz,String[] fieldNames,QueryCondition condition,QueryOrder... order) throws SQLException, MException {
+		List<T> list=(List<T>) getModelList(clazz, fieldNames, new QueryPage(0,1), condition,order);
 		if(list.size()>0){
 			return list.get(0);
 		}else{

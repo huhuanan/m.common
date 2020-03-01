@@ -1,6 +1,8 @@
 package m.common.model;
 
-public interface SessionModel {
+import m.system.cache.FlushCache;
+
+public interface SessionModel extends FlushCache {
 
 	public String getOid();
 	public void setOid(String oid);

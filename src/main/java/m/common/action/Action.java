@@ -95,7 +95,7 @@ public abstract class Action {
 	public <T extends SessionModel> void setSessionModel(T model) {
 		String sn=getSessionCookie()+getSessionLogin();
 		if(null!=sn) {
-			CacheUtil.push(sn, model);
+			CacheUtil.push(sn, model.getOid());
 		}
 	}
 	/**
@@ -106,13 +106,14 @@ public abstract class Action {
 	public <T extends SessionModel> T getSessionModel(Class<T> clazz) {
 		String sn=getSessionCookie()+getSessionLogin();
 		if(null!=sn) {
-			Object obj=CacheUtil.get(sn);
-			if(null!=obj) {
-				if(clazz.isAssignableFrom(obj.getClass())) {
-					return (T) obj;
-				}else {
-					return null;
-				}
+			String oid=(String) CacheUtil.get(sn);
+			if(!StringUtil.isSpace(oid)) {
+//				if(clazz.isAssignableFrom(obj.getClass())) {
+//					return (T) obj;
+//				}else {
+//					return null;
+//				}
+				return CacheUtil.get(clazz,oid);
 			}
 		}
 		return null;
