@@ -245,6 +245,15 @@ public class DateUtil {
 		return (c1.get(Calendar.YEAR)*12+c1.get(Calendar.MONTH))-(c2.get(Calendar.YEAR)*12+c2.get(Calendar.MONTH));
 	}
 	/**
+	 * 获取两个时间之间的日差距
+	 * @param date1
+	 * @param date2
+	 * @return
+	 */
+	public static int getDayGap(Date date1,Date date2) {
+		return new Long(Math.abs(getStartDay(date1).getTime()-getStartDay(date2).getTime())/1000/60/60/24).intValue();
+	}
+	/**
 	 * 获取 添加的月份后
 	 * @param date
 	 * @param i 
@@ -351,7 +360,9 @@ public class DateUtil {
 		return new SimpleDateFormat(parttern);
 	}
 	public static void main(String[] a ){
-		System.out.println(getWeekDay(format("2019-12-14","yyyy-MM-dd")));
+		//System.out.println(getWeekDay(format("2019-12-14","yyyy-MM-dd")));
+		//Date date=new Date();
+		//System.out.println(getDayGap( getAddDate(new Date(), 10),new Date()));
 //		System.out.println(getAddDate(new Date(), 10));
 //		System.out.println("2015-06".compareTo("2015-05"));  //1
 //		System.out.println("2015-06".compareTo("2015-06"));  //0
