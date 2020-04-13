@@ -41,9 +41,9 @@ public class SystemInit {
 		List<Class<Model>> lastInit=new ArrayList<Class<Model>>();
 		for(int i=0;i<packs.length;i++){
 			if(StringUtil.isSpace(packs[i])) continue;
-			String[] modelNames=ClassUtil.getAllQualifiedName4Class(packs[i]);
-			for(int j=0;j<modelNames.length;j++){
-				String modelName=modelNames[j];
+			List<String> modelNames=ClassUtil.getAllQualifiedName4Class(packs[i]);
+			for(int j=0,len=modelNames.size();j<len;j++){
+				String modelName=modelNames.get(j);
 				try {
 					Class<?> cc=(Class<?>) Class.forName(modelName);
 					if(Model.class.isAssignableFrom(cc)){
@@ -149,9 +149,9 @@ public class SystemInit {
 		String[] packs=actionPack.split(",");
 		for(int i=0;i<packs.length;i++){
 			if(StringUtil.isSpace(packs[i])) continue;
-			String[] modelNames=ClassUtil.getAllQualifiedName4Class(packs[i]);
-			for(int j=0;j<modelNames.length;j++){
-				String modelName=modelNames[j];
+			List<String> modelNames=ClassUtil.getAllQualifiedName4Class(packs[i]);
+			for(int j=0,len=modelNames.size();j<len;j++){
+				String modelName=modelNames.get(j);
 				try {
 					Class<?> clazz=Class.forName(modelName);
 					if(Action.class.isAssignableFrom(clazz)){

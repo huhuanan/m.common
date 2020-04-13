@@ -126,7 +126,7 @@ public class ClassUtil {
 	 * @param packeageName
 	 * @return
 	 */
-	public static String[] getAllQualifiedName4Class(String packageName){
+	public static List<String> getAllQualifiedName4Class(String packageName){
 		String packagePath=packageName.replaceAll("\\.", "/");
 		List<String> names=new ArrayList<String>();
 		try {
@@ -148,12 +148,16 @@ public class ClassUtil {
 				File file=new File(path);
 				if(file.isDirectory()){
 					for(String name : file.list()){
-						names.add(packageName+"."+name.substring(0, name.lastIndexOf(".")));
+						if(name.indexOf(".")<0) {
+							names.addAll(getAllQualifiedName4Class(packageName+"."+name));
+						}else {
+							names.add(packageName+"."+name.substring(0, name.lastIndexOf(".")));
+						}
 					}
 				}
 			}
 		}catch(Exception e) {}
-		return names.toArray(new String[] {});
+		return names;
 //		File file=new File(Thread.currentThread().getContextClassLoader().getResource(packeageName.replaceAll("\\.", "/")).getPath());
 //		if(file.isDirectory()){
 //			String[] names=file.list();
